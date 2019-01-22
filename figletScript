@@ -1,0 +1,37 @@
+#!/bin/bash
+
+function has_figlet () {
+	if hash figlet 2>/dev/null; then 
+		return 0
+	else 
+		return 1
+	fi
+}
+
+function install_figlet () {
+	echo
+	echo "You don't have figlet installed. Installing it now."
+	echo
+	brew install figlet > /dev/null; 2>&1
+
+	if hash figlet 2>/dev/null; then
+		echo "Install successful."
+		echo 
+	else
+		echo "Failed to install figlet."
+		echo
+		exit 1
+	fi 
+}
+
+function check_for_and_install_figlet () {
+	# check whether the user has figlet and if they're using a Mac. 
+	if ! has_figlet && [[ $OSTYPE == "darwin"* ]]; then 
+		install_figlet
+	fi 
+}
+
+
+check_for_and_install_figlet
+
+figlet -f smscript "Hello world"
